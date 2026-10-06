@@ -1,30 +1,30 @@
 # handoff: live
 project: affliatemarketer
 type: code + apps-script
-updated: 2026-10-06 (after PR #3 opened)
-goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. PRs #1, #2 merged; PR #3 (connect site to backend) open as draft.
+updated: 2026-10-06 19:20
+goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. PRs #1–#3 merged; backend live; fixing GitHub Pages publish.
 
 ## next-steps  <!-- resume here -->
-1. PR dsc26support-beep/affliatemarketer#3 (draft) — sets public/config.js apiUrl to user's /exec URL. Session subscribed; watch CI. Merge only when user says so.
-2. User verifies backend in browser: <exec-url>?action=ping → {"success":true}. If sign-in page → deployment access not "Anyone".
-3. User: GitHub Settings → Pages → Source: GitHub Actions; dashboard at https://dsc26support-beep.github.io/affliatemarketer/admin/
-4. User: dashboard Settings → remote mode, paste admin token (never in chat/repo), Test connection; site settings (site URL, contact admin@mwakete.com, legal URLs, alert email).
-5. Then first real offer → campaign → page → publish → export static HTML to public/p/.
+1. User: Settings → Pages → Source must be "GitHub Actions" (currently "Deploy from a branch" → serves repo root, site lives in public/ → /admin/ 404). Then re-run run 37513914977 ("Deploy site to GitHub Pages").
+2. Verify dashboard https://dsc26support-beep.github.io/affliatemarketer/admin/ loads (user — github.io blocked from this env).
+3. User: dashboard Settings → remote mode, paste admin token (never chat/repo), Test connection; site settings (site URL https://dsc26support-beep.github.io/affliatemarketer, legal URLs, contact admin@mwakete.com, author bio).
+4. First real offer → campaign → page → publish → export static HTML → commit to public/p/<slug>.html (offer to do commit).
 
 ## state
-- done: PR #1 (full app), PR #2 (legal pages: Mote Nakau, Betio, Tarawa, Kiribati; contact admin@mwakete.com; dist/AffiliateHub.gs single-file backend) merged.
-- done: user deployed backend on Sheet 1LP-Zuoc6N8VYotYQhRiwuOxEyLtZCHLGuMmka4LVPAA; web app URL in PR #3.
-- 34 node tests pass; CI green on merged PRs.
+- done: PR #1 app, PR #2 legal pages + dist/AffiliateHub.gs, PR #3 config.js apiUrl (+ e2e demo-mode fix) — all merged (main cd300ce).
+- done: backend verified by user: ?action=ping → {"success":true,"version":"1.0.0"}.
+- Pages: pages.yml runs 1–3 failed (Pages not enabled / wrong source); dynamic "pages build and deployment" succeeded 19:13 = branch mode (wrong).
 
 ## decisions
-- /exec URL is public by design (tracker calls it); admin token stays in Script Properties + user's browser only.
-- clasp push not possible from cloud session (needs browser OAuth) → single-file paste bundle.
-- Branch reset to origin/main after each merged PR (force-with-lease), per merged-PR rule.
+- /exec URL public by design; admin token only in Script Properties + user's browser.
+- With apiUrl set, dashboard defaults to remote mode (intended); e2e seeds demo mode via addInitScript.
+- clasp impossible from cloud env → single-file paste bundle.
+- Merged-PR rule: reset branch to origin/main before new work (force-with-lease).
 
 ## gotchas
-- This cloud env's network policy blocks script.google.com (CONNECT 403) — cannot ping backend from here; user verifies in browser.
-- Pages deploy workflow fails until Pages source = GitHub Actions; re-run after enabling.
-- Real Apps Script runtime only verified via mocks + user's deploy; first real setup() result unconfirmed.
+- Cloud env network blocks script.google.com AND github.io — user must verify live URLs.
+- Pages "Deploy from a branch" breaks site (needs public/ as root) → must use GitHub Actions source.
+- If repo private on free plan, Pages unavailable → make public or use Cloudflare Pages.
 
 ## open-questions
-- Did ?action=ping return success? Merge PR #3?
+- Pages switched to GitHub Actions + re-run green?
