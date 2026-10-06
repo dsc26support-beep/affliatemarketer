@@ -34,6 +34,11 @@ const check = (cond, msg) => { console.log((cond ? '  ✓ ' : '  ✗ ') + msg); 
 
 async function newPage(viewport) {
   const ctx = await browser.newContext({ viewport });
+  // public/config.js may point at a real backend (then the dashboard defaults to remote
+  // mode). Tests run in demo mode unless a test sets its own connection config.
+  await ctx.addInitScript(() => {
+    try { if (!localStorage.getItem('ah_admin_cfg')) localStorage.setItem('ah_admin_cfg', JSON.stringify({ mode: 'demo' })); } catch (e) { /* opaque origin */ }
+  });
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));

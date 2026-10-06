@@ -5,6 +5,6 @@
  */
 window.AH_SITE = {
   // Your Apps Script web app URL, e.g. https://script.google.com/macros/s/AKfy…/exec
-  apiUrl: '',
+  apiUrl: 'https://script.google.com/macros/s/AKfycbw9LMG4VIWa7vOIRAmeOMFxmq5MuMDu1Qafsnnf1c6iaLMfjFANPrXO1Rq5W80qhp8BEQ/exec',
   siteName: 'My Affiliate Guides'
 };
