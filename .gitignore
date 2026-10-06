@@ -1,0 +1,5 @@
+node_modules/
+tests/e2e/screenshots/
+public/p/__e2e.html
+apps-script/.clasp.json
+.DS_Store

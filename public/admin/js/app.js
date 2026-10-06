@@ -60,6 +60,11 @@
       view.innerHTML = UI.empty('Page not found', 'This screen does not exist.', '<a class="btn" href="#/dashboard">Go to dashboard</a>');
       return;
     }
+    // Fresh container per render: drops delegated listeners from the previous screen
+    // (otherwise handlers accumulate and actions fire more than once).
+    var fresh = view.cloneNode(false);
+    view.parentNode.replaceChild(fresh, view);
+    view = fresh;
     UI.loading(view);
     var ctx = {
       params: match.params,

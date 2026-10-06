@@ -43,6 +43,7 @@
       t.className = 'toast ' + (type || '');
       t.textContent = msg;
       box.appendChild(t);
+      while (box.children.length > 3) box.removeChild(box.firstChild);
       setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, type === 'error' ? 7000 : 3500);
     },
 

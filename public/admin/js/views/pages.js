@@ -180,13 +180,13 @@
         (page.status === 'published' ? '<button class="btn" id="unpublish">Unpublish</button>' : '<button class="btn danger" id="delete">Delete</button>') + '</div></div>' +
         (page.status === 'published' ? '<p class="issue warning">This page is live. Saving changes moves it back to draft until you approve it again.</p>' : '') +
         '<div class="grid grid-2">' +
-        '<form id="page-form" class="panel" novalidate><div class="tabs" role="tablist">' + TABS.map(function (x) { return '<button type="button" role="tab" data-tab="' + x[0] + '" class="' + (x[0] === tab ? 'active' : '') + '">' + x[1] + '</button>'; }).join('') + '</div>' +
+        '<div><form id="page-form" class="panel" novalidate><div class="tabs" role="tablist">' + TABS.map(function (x) { return '<button type="button" role="tab" data-tab="' + x[0] + '" class="' + (x[0] === tab ? 'active' : '') + '">' + x[1] + '</button>'; }).join('') + '</div>' +
         '<section data-panel="content">' + contentHtml + '</section>' +
         '<section data-panel="basics">' + basics + ctaHtml + '</section>' +
         '<section data-panel="seo">' + seoHtml + '</section>' +
         '<section data-panel="distribute"><p class="small muted">Tag every link you share so Analytics can attribute visits to the right channel.</p>' + utmHtml + '</section>' +
-        '<section data-panel="ab"></section>' +
-        '</form>' +
+        '<section data-panel="ab"><p class="small muted">A/B tests for this page are managed below.</p></section>' +
+        '</form><div class="panel" id="ab-root" hidden><h2>A/B tests</h2>' + abHtml + '</div></div>' +
         '<div><div class="panel"><h2>Compliance check</h2><div id="check"></div></div>' +
         '<div class="panel"><h2>Review &amp; publish</h2>' +
         '<label class="check"><input type="checkbox" id="approve"> <span>I reviewed this page. Every claim is accurate and supported, nothing implies testing I did not do, and it gives readers genuine value beyond the merchant\'s page.</span></label>' +
@@ -194,10 +194,8 @@
         '<p class="small muted" style="margin-top:8px">Live URL after export: <code>' + esc(pageUrl(page, settings)) + '</code></p></div>' +
         '<div class="panel"><h2>Preview</h2><p class="small muted">Preview only — tracking is disabled here.</p><iframe class="preview-frame" id="preview" title="Page preview" sandbox="allow-same-origin"></iframe></div></div>' +
         '</div>';
-      // A/B section lives outside the page form to avoid nested forms.
-      el.querySelector('[data-panel="ab"]').innerHTML = '<div id="ab-root"></div>';
+      // The A/B panel lives outside the page form (forms cannot be nested).
       var abRoot = el.querySelector('#ab-root');
-      abRoot.innerHTML = abHtml;
 
       var form = el.querySelector('#page-form');
       var dirty = false;
@@ -236,6 +234,7 @@
       function showTab(name) {
         Array.prototype.forEach.call(form.querySelectorAll('[data-panel]'), function (s) { s.hidden = s.getAttribute('data-panel') !== name; });
         Array.prototype.forEach.call(form.querySelectorAll('[data-tab]'), function (b) { b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+        abRoot.hidden = name !== 'ab';
       }
       showTab(tab);
       UI.on(form, '[data-tab]', 'click', function (ev, b) { showTab(b.getAttribute('data-tab')); });
