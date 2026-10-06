@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page not found</title>
+  <meta name="robots" content="noindex">
+  <script>
+    // A published page that has not been exported as a static file yet:
+    // /p/<slug>.html -> live viewer /p/?slug=<slug>
+    (function () {
+      var m = location.pathname.match(/^(.*\/p\/)([a-z0-9-]{1,80})\.html$/);
+      if (m) location.replace(m[1] + '?slug=' + m[2] + location.search.replace(/^\?/, '&'));
+    })();
+  </script>
+  <style>body{font:17px/1.6 system-ui,sans-serif;max-width:640px;margin:10vh auto;padding:0 16px}</style>
+</head>
+<body>
+  <h1>Page not found</h1>
+  <p>The page you are looking for does not exist. <a href="/">Go to the home page</a>.</p>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Affiliate Campaign Hub</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="../config.js"></script>
+  <script src="../assets/js/ah-core.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/backend.js" defer></script>
+  <script src="js/views/dashboard.js" defer></script>
+  <script src="js/views/offers.js" defer></script>
+  <script src="js/views/campaigns.js" defer></script>
+  <script src="js/views/pages.js" defer></script>
+  <script src="js/views/content.js" defer></script>
+  <script src="js/views/analytics.js" defer></script>
+  <script src="js/views/links.js" defer></script>
+  <script src="js/views/settings.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#view">Skip to content</a>
+  <header class="topbar">
+    <button class="nav-toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="Menu">☰</button>
+    <a class="brand" href="#/dashboard">Affiliate Campaign Hub</a>
+    <span class="mode" id="mode-badge" title="Data source"></span>
+  </header>
+  <div class="layout">
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#/dashboard" data-nav="dashboard">Dashboard</a>
+      <a href="#/offers" data-nav="offers">Offers</a>
+      <a href="#/campaigns" data-nav="campaigns">Campaigns</a>
+      <a href="#/pages" data-nav="pages">Landing Pages</a>
+      <a href="#/content" data-nav="content">Content</a>
+      <a href="#/social" data-nav="social">Social</a>
+      <a href="#/email" data-nav="email">Email</a>
+      <a href="#/analytics" data-nav="analytics">Analytics</a>
+      <a href="#/links" data-nav="links">Links</a>
+      <a href="#/settings" data-nav="settings">Settings</a>
+    </nav>
+    <main class="view" id="view" tabindex="-1" aria-live="polite"></main>
+  </div>
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <dialog class="modal" id="modal"><div id="modal-body"></div></dialog>
+  <noscript><p class="noscript">This dashboard needs JavaScript.</p></noscript>
+</body>
+</html>

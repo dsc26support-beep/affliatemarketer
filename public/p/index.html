@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Loading…</title>
+  <!-- Live viewer for published pages (?slug=…). For SEO, export the static HTML file
+       from the dashboard into /p/<slug>.html — this viewer is noindex to avoid duplicates. -->
+  <meta name="robots" content="noindex,follow">
+  <script src="../config.js"></script>
+  <script src="../assets/js/ah-render.js" defer></script>
+  <script src="../assets/js/track.js" defer></script>
+</head>
+<body data-ah-auto="0">
+  <main class="ah-main" id="main"><p>Loading…</p></main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var site = window.AH_SITE || {};
+      var main = document.getElementById('main');
+      var slug = (/[?&]slug=([a-z0-9-]{1,80})/.exec(location.search) || [])[1];
+      function show(msg) { main.innerHTML = '<p>' + AH.util.escapeHtml(msg) + '</p>'; document.title = msg; }
+      if (!slug) return show('Page not found.');
+      if (!site.apiUrl) return show('This site is not connected to its API yet.');
+
+      var style = document.createElement('style');
+      style.textContent = AH.landing.CSS;
+      document.head.appendChild(style);
+
+      fetch(site.apiUrl + '?action=getPublicLandingPage&slug=' + encodeURIComponent(slug))
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.success) return show(res.error && res.error.code === 'NOT_FOUND' ? 'Page not found.' : 'This page could not be loaded.');
+          var d = res.data;
+          var settings = d.settings || {};
+          var ctx = { page: d.page, product: d.product, link: d.link, settings: settings };
+          var seo = d.page.seo || {};
+          document.title = seo.title || d.page.title;
+          var meta = document.createElement('meta');
+          meta.name = 'description';
+          meta.content = seo.metaDescription || '';
+          document.head.appendChild(meta);
+          var canonical = AH.seo.canonical(d.page, settings);
+          if (/^https?:/.test(canonical)) {
+            var link = document.createElement('link');
+            link.rel = 'canonical';
+            link.href = canonical;
+            document.head.appendChild(link);
+          }
+          var wrap = document.createElement('div');
+          wrap.innerHTML = AH.landing.renderArticle(ctx) + AH.landing.renderFooter(settings);
+          main.replaceWith.apply(main, Array.prototype.slice.call(wrap.childNodes));
+          if (d.abTests && d.abTests.length) {
+            var ab = document.createElement('script');
+            ab.type = 'application/json';
+            ab.id = 'ah-ab';
+            ab.textContent = JSON.stringify(d.abTests);
+            document.body.appendChild(ab);
+          }
+          var b = document.body;
+          b.setAttribute('data-ah-page', d.page.id);
+          b.setAttribute('data-ah-api', site.apiUrl);
+          b.setAttribute('data-ah-dnt', settings.respectDoNotTrack === false ? '0' : '1');
+          b.setAttribute('data-ah-consent', settings.requireTrackingConsent ? '1' : '0');
+          b.setAttribute('data-ah-privacy', settings.privacyUrl || '');
+          if (window.AHTrack) window.AHTrack.init();
+        })
+        .catch(function () { show('This page could not be loaded. Please try again.'); });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Guides and honest product overviews</title>
+  <meta name="description" content="Practical guides, buyer checklists and honest product overviews with clear affiliate disclosures.">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="./" id="site-name">Guides</a>
+    <a href="affiliate-disclosure.html" class="muted">Affiliate disclosure</a>
+  </header>
+  <main class="site-main" id="main">
+    <h1>Practical guides and honest product overviews</h1>
+    <p>Every guide explains the problem first, compares options (including free ones) and lists real pros and cons.
+      Some links are affiliate links — see the <a href="affiliate-disclosure.html">disclosure</a>.</p>
+    <h2>Latest guides</h2>
+    <ul class="card-list" id="guides" aria-live="polite"><li class="muted">Loading…</li></ul>
+  </main>
+  <footer class="site-footer">
+    <nav aria-label="Legal">
+      <a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a><a href="contact.html">Contact</a>
+    </nav>
+  </footer>
+  <script>
+    (function () {
+      var site = window.AH_SITE || {};
+      var list = document.getElementById('guides');
+      if (site.siteName) { document.getElementById('site-name').textContent = site.siteName; }
+      function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+      if (!site.apiUrl) { list.innerHTML = '<li class="muted">No guides published yet.</li>'; return; }
+      fetch(site.apiUrl + '?action=getPublicPages').then(function (r) { return r.json(); }).then(function (res) {
+        var pages = res.success ? res.data.pages : [];
+        if (!pages.length) { list.innerHTML = '<li class="muted">No guides published yet.</li>'; return; }
+        list.innerHTML = pages.map(function (p) {
+          return '<li><a href="p/' + encodeURIComponent(p.slug) + '.html">' + esc(p.title) + '</a><br><span class="muted">' + esc(p.description) + '</span></li>';
+        }).join('');
+      }).catch(function () { list.innerHTML = '<li class="muted">Guides could not be loaded right now.</li>'; });
+    })();
+  </script>
+</body>
+</html>
