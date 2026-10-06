@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs --check",
-    "test": "node scripts/build.mjs --check && node --test tests/",
+    "test": "node scripts/build.mjs --check && node --test tests/*.test.js",
     "test:e2e": "node tests/e2e/run.mjs",
     "serve": "node scripts/serve.mjs"
   },

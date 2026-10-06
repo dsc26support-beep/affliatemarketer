@@ -50,7 +50,7 @@ AH.campaign = (function () {
     ];
     var type = p.productType;
     if (type === 'software') list.push({ objection: 'Is it hard to learn?', response: 'Describe the setup steps and learning curve; include screenshots if you have tested it.' });
-    if (type === 'digital_course' || type === 'ebook') list.push({ objection: 'I have bought courses before and never finished them.', response: 'Give the real time commitment and suggest a simple plan for the first week.' });
+    if (type === 'digital_course' || type === 'ebook') list.push({ objection: 'What if I never finish it, like other courses?', response: 'Give the real time commitment and suggest a simple plan for the first week.' });
     if (type === 'supplement') list.push({ objection: 'Is it safe?', response: 'Do not make safety claims. Tell readers to check ingredients with their doctor, especially if they take medication.' });
     if (p.recurring === 'yes' || type === 'membership') list.push({ objection: 'Can I cancel anytime?', response: 'Explain the billing terms and cancellation process from the official page.' });
     return list;
