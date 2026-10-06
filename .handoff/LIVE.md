@@ -1,7 +1,7 @@
 # handoff: live
 project: affliatemarketer
 type: code + apps-script
-updated: 2026-10-06 19:20
+updated: 2026-10-06 19:30
 goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. PRs #1–#3 merged; backend live; fixing GitHub Pages publish.
 
 ## next-steps  <!-- resume here -->
@@ -27,4 +27,4 @@ goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site 
 - If repo private on free plan, Pages unavailable → make public or use Cloudflare Pages.
 
 ## open-questions
-- Pages switched to GitHub Actions + re-run green?
+- Pages switched to GitHub Actions + re-run green? (as of 19:30 still not: only branch-mode build succeeded; user re-sent /exec URL — clarified it's the backend, dashboard is github.io/affliatemarketer/admin/)
