@@ -126,3 +126,14 @@ test('missing sheets produce a logged internal error, not a leak', () => {
   assert.equal(r.error.code, 'INTERNAL_ERROR');
   assert.doesNotMatch(r.error.message, /setup|sheet/i);
 });
+
+test('single-file bundle (dist/AffiliateHub.gs) works on its own', () => {
+  const g = mockGoogle();
+  const ctx = vm.createContext(g.globals);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'dist/AffiliateHub.gs'), 'utf8'), ctx, { filename: 'AffiliateHub.gs' });
+  ctx.setup();
+  const token = g.props.ADMIN_TOKEN;
+  const r = post(ctx, { action: 'createProduct', token, payload: VALID_OFFER });
+  assert.equal(r.success, true, JSON.stringify(r));
+  assert.equal(JSON.parse(ctx.doGet({ parameter: { action: 'ping' } }).text).success, true);
+});
