@@ -23,7 +23,7 @@ The dashboard starts in **Demo mode**: the full app runs in your browser and dat
      cp apps-script/.clasp.json.example apps-script/.clasp.json   # paste the Script ID (Project Settings → IDs)
      cd apps-script && clasp push
      ```
-   - **Copy/paste:** for every `.js` file in `apps-script/`, create a script file with the same name and paste the content. Then replace `appsscript.json`: Project Settings → "Show appsscript.json in editor".
+   - **Copy/paste (easiest, one file):** open `dist/AffiliateHub.gs` (raw view on GitHub), copy everything, and paste it over the contents of `Code.gs` in the editor. Then Project Settings → tick "Show appsscript.json manifest file in editor" and replace `appsscript.json` with `dist/appsscript.json`. Save.
 4. In the editor, select the function **`setup`** and click **Run**. Grant the permissions.
    - This creates every tab with headers (see [SHEETS_SCHEMA.md](SHEETS_SCHEMA.md)).
    - It creates a random **admin token** and saves it in Script Properties.

@@ -9,7 +9,7 @@
  * Usage:  node scripts/build.mjs          write outputs
  *         node scripts/build.mjs --check  exit 1 if outputs are stale (used in CI/tests)
  */
-import { readFileSync, writeFileSync, readdirSync, existsSync, unlinkSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, unlinkSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -46,6 +46,21 @@ outputs.set(
   HEADER + RENDER_FILES.map((f) => `/* ---- ${f} ---- */\n` + readFileSync(join(sharedDir, f), 'utf8')).join('\n')
 );
 
+// Single-file backend for copy/paste installs (no clasp): every Apps Script file in one .gs.
+// Apps Script shares one global scope across files, so concatenation is equivalent.
+const bundleOut = join(root, 'dist', 'AffiliateHub.gs');
+const gasOwn = readdirSync(gasDir).filter((f) => f.endsWith('.js') && !f.startsWith('Shared_')).sort();
+outputs.set(
+  bundleOut,
+  '/* GENERATED FILE — Affiliate Campaign Hub backend, single file for pasting into Apps Script.\n' +
+  ' * Source: /shared + /apps-script. Regenerate with `npm run build`. */\n' +
+  files.filter((f) => !BROWSER_ONLY.has(f)).map((f) => `/* ---- shared/${f} ---- */\n` + readFileSync(join(sharedDir, f), 'utf8'))
+    .concat(gasOwn.map((f) => `/* ---- apps-script/${f} ---- */\n` + readFileSync(join(gasDir, f), 'utf8')))
+    .join('\n')
+);
+
+outputs.set(join(root, 'dist', 'appsscript.json'), readFileSync(join(gasDir, 'appsscript.json'), 'utf8'));
+
 // Remove stale generated Apps Script files (e.g. a shared file that was renamed).
 const stale = readdirSync(gasDir).filter((f) => f.startsWith('Shared_') && !outputs.has(join(gasDir, f)));
 
@@ -54,7 +69,7 @@ for (const [path, content] of outputs) {
   const current = existsSync(path) ? readFileSync(path, 'utf8') : null;
   if (current !== content) {
     dirty = true;
-    if (!check) writeFileSync(path, content);
+    if (!check) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, content); }
   }
 }
 if (!check) stale.forEach((f) => unlinkSync(join(gasDir, f)));
