@@ -1,33 +1,33 @@
 # handoff: live
 project: affliatemarketer
 type: code + apps-script
-updated: 2026-10-06 13:27
-goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. Phases 1–4 built; PR open and green.
+updated: 2026-10-06 13:50
+goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. PR #1 merged; PR #2 (legal pages + single-file backend) open, ready for review.
 
 ## next-steps  <!-- resume here -->
-1. PR dsc26support-beep/affliatemarketer#1 (draft, base main) — CI green, no reviews. Waits on user to review/mark ready/merge. Session subscribed; safety-net check-in trig_01Kv9H2oeJYervAzAQ9fxa2Q at 14:13Z.
-2. User deploys Google side per docs/SETUP.md (bound script, clasp push, setup(), web app access "Anyone", URL+token into /admin Settings), then docs/TESTING.md manual checklist.
-3. Phase 5 (AI, more networks) only after real deploy is stable.
+1. PR dsc26support-beep/affliatemarketer#2 — ready (not draft), CI pending on latest push. Merge only when user says so. Session subscribed; safety-net check-in trig_01VrswSDCoBhAwN9hN3Hj2oF (14:31Z).
+2. User installs backend on their Sheet (ID 1LP-Zuoc6N8VYotYQhRiwuOxEyLtZCHLGuMmka4LVPAA): paste dist/AffiliateHub.gs into Code.gs + dist/appsscript.json, run setup(), deploy web app (Me / Anyone). Waiting for user to send /exec URL.
+3. With /exec URL: put it in public/config.js `apiUrl` (public, not secret) → commit/PR. Token stays with user (dashboard Settings only, never chat/repo).
+4. User: GitHub Settings → Pages → Source: GitHub Actions; re-run Pages deploy. Dashboard: https://dsc26support-beep.github.io/affliatemarketer/admin/
+5. Settings in dashboard: contact email admin@mwakete.com, alert email (user's choice), site URL, legal URLs.
 
 ## state
-- done: shared core (/shared), Apps Script adapters, admin SPA (10 views), tracker, public viewer, legal templates, docs, CI (ci.yml + pages.yml), 33 node tests + 30 Playwright checks.
-- done: `main` = empty root commit 89078cc (user-approved); merged into branch (7307f3d) for shared history so PR shows full diff — no history rewrite.
+- done: PR #1 merged (55e1c21) — full app, 33→34 tests, e2e 30 checks.
+- done (PR #2): legal pages filled — owner Mote Nakau, Betio, Tarawa, Kiribati; governing law Kiribati; contact admin@mwakete.com; dated 6 Oct 2026.
+- done (PR #2): build emits dist/AffiliateHub.gs (single-file backend) + dist/appsscript.json; npm test checks staleness + runs bundle in mocked runtime.
 
 ## decisions
-- One API codebase for Apps Script, browser demo mode, Node tests — avoids drift.
-- text/plain POST → no CORS preflight (Apps Script can't answer OPTIONS).
-- Direct affiliate links rel="sponsored nofollow" + sendBeacon clicks; no cloaking.
-- Static HTML export for SEO; live viewer noindex.
-- `[[placeholders]]` + compliance gate + explicit approve; editing live page → draft.
-- Conversions manual only; admin token in Script Properties + sessionStorage.
-- Empty-root main chosen because identical head/base can't form a PR.
+- clasp push impossible from cloud session (needs browser OAuth to user's Google; no ~/.clasprc.json) — don't ask user for OAuth codes/tokens; single-file paste bundle instead.
+- Bundle = concatenation of shared + apps-script files (Apps Script shares one global scope).
+- Branch restarted from main after PR #1 merge (force-with-lease) per merged-PR rule.
+- Earlier: main = empty root commit merged into branch (user-approved) so PR #1 had a diff.
+- Privacy policy written GDPR-friendly since Kiribati lacks a comprehensive data-protection law (not legal advice).
 
 ## gotchas
-- app.js clones #view per render (fixed: handlers fired N times).
-- No nested <form> (A/B panel outside #page-form).
-- Test VM-realm arrays: compare via JSON/length.
-- Real Apps Script deploy + Digistore24 link formats unverified (allowlist extendable in Settings).
-- e2e locally: `NODE_PATH=$(npm root -g) npm run test:e2e`.
+- Script "unverified app" warning on first run — expected (Advanced → Go to project).
+- Web app must be access "Anyone" + /exec URL, else BAD_RESPONSE.
+- Real Apps Script run still unverified (only mocked).
 
 ## open-questions
-- None pending; awaiting user review of PR #1.
+- Merge PR #2? (awaiting user)
+- /exec URL from user after deploy.
