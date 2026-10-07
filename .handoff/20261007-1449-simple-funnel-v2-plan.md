@@ -1,4 +1,4 @@
-# handoff: live
+# handoff: simple-funnel-v2-plan
 project: affliatemarketer
 type: code + apps-script
 generated: 2026-10-07 14:49
@@ -34,7 +34,7 @@ goal: Pivot hub into a SIMPLE platform: paste affiliate link → auto-pull produ
 - Admin token was once pasted in chat → told to run rotateAdminToken(); unconfirmed.
 - Google "unable to open file" on /exec = multi-account login; incognito works.
 - Apps Script quotas: UrlFetch 20k/day consumer; MailApp 100/day (why MailerLite).
-- Context hit ~200k in old session → fresh session chosen. Full plan also in Drive: Claude Handoffs/affliatemarketer/20261007-1449-simple-funnel-v2-plan.
+- Context hit ~200k in old session → fresh session chosen.
 
 ## git
 - branch: claude/compassionate-turing-f8vfgf (= PR #4)

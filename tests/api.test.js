@@ -86,6 +86,16 @@ test('formula-like input is stored as text and extra domains can be allowed', ()
   assert.equal(h.call('validateLink', { url: 'https://go.partner-ds24.example/redir/1/me/', network: 'digistore24' }).data.ok, true);
 });
 
+test('Digistore24 vendor-page links with ?aff= or #aff= are recognised as promolinks', () => {
+  const h = makeApi();
+  h.call('saveSettings', { extraAllowedDomains: 'vendor.example' });
+  const warn = (url) => h.call('validateLink', { url, network: 'digistore24' }).data.warnings.length;
+  assert.equal(warn('https://www.vendor.example/DS24/offer.htm#aff=me'), 0);
+  assert.equal(warn('https://www.vendor.example/offer.htm?aff=me'), 0);
+  assert.equal(warn('https://www.vendor.example/offer.htm'), 1);
+  assert.equal(warn('https://www.vendor.example/offer.htm?staff=me'), 1);
+});
+
 test('changing the affiliate URL of an offer with live pages needs confirmation', () => {
   const h = makeApi();
   const ids = publishedPage(h);
