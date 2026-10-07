@@ -653,8 +653,9 @@ AH.validate = (function () {
     if (network === 'clickbank' && !/hop\./.test(parsed.host) && !/hop/i.test(parsed.path + parsed.query)) {
       warnings.push('This does not look like a ClickBank HopLink (usually https://hop.clickbank.net/?affiliate=…&vendor=…). Double-check it in your ClickBank account.');
     }
-    if (network === 'digistore24' && !/\/redir\//i.test(parsed.path) && !/aff=/i.test(parsed.query)) {
-      warnings.push('This does not look like a Digistore24 promolink (usually contains /redir/PRODUCT/AFFILIATE/). Double-check it in your Digistore24 account.');
+    // Vendor-page promolinks carry the affiliate ID as ?aff=… or #aff=… (fragment).
+    if (network === 'digistore24' && !/\/redir\//i.test(parsed.path) && !/(^|&)aff=/i.test(parsed.query) && !/(^|&)aff=/i.test(parsed.hash)) {
+      warnings.push('This does not look like a Digistore24 promolink (usually contains /redir/PRODUCT/AFFILIATE/ or aff=YOUR_ID). Double-check it in your Digistore24 account.');
     }
     return { ok: true, error: null, warnings: warnings, parsed: parsed, normalized: normalizeUrl(parsed) };
   }
