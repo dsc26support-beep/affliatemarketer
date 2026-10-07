@@ -1,4 +1,4 @@
-# handoff: live
+# handoff: simple-funnel-v2-plan
 project: affliatemarketer
 type: code + apps-script
 generated: 2026-10-07 14:49
