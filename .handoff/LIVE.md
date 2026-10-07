@@ -5,7 +5,7 @@ updated: 2026-10-07
 goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site + Apps Script API + Google Sheets. All live + connected; user entering first offer.
 
 ## next-steps  <!-- resume here -->
-1. PR dsc26support-beep/affliatemarketer#4 (draft) — Digistore24 `#aff=` fragment promolink fix. Subscribed; drive CI green. Merge only when user says.
+1. PR dsc26support-beep/affliatemarketer#4 (draft) — Digistore24 `#aff=` fragment promolink fix. CI green, mergeable (head cf25fe2). Waiting on user "merge PR 4". Still subscribed; safety-net check-ins stopped (nothing new, user silent).
 2. After merge: user pastes new dist/AffiliateHub.gs into Apps Script → Manage deployments → Edit → New version (keeps URL). Pages redeploys frontend automatically.
 3. User confirms `offerflower` in their link is THEIR Digistore24 ID (else commissions lost).
 4. Offered: help fill offer fields with compliant wording (health supplement — no medical claims).
@@ -32,4 +32,4 @@ goal: Affiliate Campaign Hub (Digistore24/ClickBank) — vanilla JS static site 
 
 ## open-questions
 - Is offerflower the user's Digistore24 ID?
-- Token rotated? Merge PR #4?
+- Token rotated? Merge PR #4 (ready)?
